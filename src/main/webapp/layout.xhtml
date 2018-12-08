@@ -4,26 +4,33 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
+<style>
+</style>
 <f:view>
 	<h:head>
 		<meta charset="utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="stylesheet" type="text/css" href="resources/bootstrap.css" />
-		<script src="resources/bootstrap.css"/>
+		<script src="resources/bootstrap.js" />
 		<title>TODO</title>
 	</h:head>
 	<h:body>
 		<div class="ui-g">
-			<div class="ui-g-12">
-				<p:toolbar>
-					<f:facet name="left">
-						<p:commandButton value="TODO" styleClass="btn btn-primary" />
-					</f:facet>
-				</p:toolbar>
+			<div class="ui-g-12" style="padding: 0">
+				<nav class="navbar navbar-light bg-light">
+					<span class="navbar-brand mb-0 h1">TODO</span>
+				</nav>
 			</div>
 			<div class="ui-g-12">
-				<ui:insert name="content" />
+				<div class="card text-center"
+					style="margin-right: 10%; margin-left: 10%; margin-top: 5%">
+					<div class="card-header" style="font-size: 28px">Coisas a fazer</div>
+					<div class="card-body">
+						<ui:insert name="content" />
+					</div>
+					<div class="card-footer text-muted">Todo App</div>
+				</div>
 			</div>
 		</div>
 	</h:body>

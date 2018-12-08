@@ -8,32 +8,114 @@
 	xmlns:p="http://primefaces.org/ui">
 
 <ui:composition template="layout.xhtml">
+	<style>
+#imgDelete {
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	display: none;
+}
+</style>
 	<ui:define name="content">
 		<h:form id="itemForm">
+			<div class="mx-auto" style="width: 505px;">
+				<h:panelGrid columns="2" layout="grid"
+					styleClass="ui-panelgrid-blank ui-fluid">
+					<p:inputText id="name" value="#{itemController.item.nome}"
+						size="50">
+						<f:passThroughAttribute name="placeholder"
+							value="O que precisa ser feito?" />
+					</p:inputText>
+					<p:commandButton value="Add" action="#{itemController.save}" />
+				</h:panelGrid>
 
-			<h:panelGrid columns="2" layout="grid">
-				<p:inputText id="name" value="#{itemController.item.nome}" size="50">
-					<f:passThroughAttribute name="placeholder"
-						value="O que precisa ser feito?" />
-				</p:inputText>
-				<p:commandButton value="Save" action="#{itemController.save}" />
-			</h:panelGrid>
+				<br />
 
-			<p:panel header="Item List">
-				<p:dataTable id="table" var="item"
+				<p:growl id="msgs" showDetail="true" />
+
+				<p:dataTable id="table" var="item" editable="true" editMode="cell"
+					rendered="#{not empty itemController.itemsList}" reflow="true"
 					value="#{itemController.itemsList}" styleClass="table">
-					<p:column>
-						<f:facet name="header">Status</f:facet>
-						<h:outputText value="#{item.status}" />
-					</p:column>
-					<p:column>
-						<f:facet name="header">Name</f:facet>
-						<h:outputText value="#{item.nome}" />
-					</p:column>
-				</p:dataTable>
-			</p:panel>
 
+					<p:ajax event="cellEdit" listener="#{itemController.onCellEdit}"
+						update=":itemForm:msgs" />
+
+					<p:column style="width:50px">
+						<p:commandLink action="#{itemController.changeStatusItem(item)}"
+							update="itemForm">
+							<h:panelGroup rendered="#{item.status eq false}">
+								<img src="resources/asserts/icon-uncheck.png"
+									onmouseover="this.src='resources/asserts/icon-check.png'"
+									onmouseout="this.src='resources/asserts/icon-uncheck.png'" />
+							</h:panelGroup>
+							<h:panelGroup rendered="#{item.status eq true}">
+								<img src="resources/asserts/icon-check.png" />
+							</h:panelGroup>
+						</p:commandLink>
+					</p:column>
+
+					<p:column style="text-align: left;">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{item.nome}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText id="nome" value="#{item.nome}" style="width:100%"
+									label="Nome" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column style="width:50px">
+						<p:commandLink action="#{itemController.deleteItem(item)}"
+							update="itemForm">
+							<img src="resources/asserts/trash_grey.png"
+								onmouseover="this.src='resources/asserts/trash_red.png'"
+								onmouseout="this.src='resources/asserts/trash_grey.png'" />
+						</p:commandLink>
+					</p:column>
+
+					<f:facet name="footer">
+						<div style="font-size: 12px">
+							<span>Há #{itemController.quantidadeItemsAtivos}
+								restantes.</span>
+						</div>
+					</f:facet>
+
+				</p:dataTable>
+
+				<p:toolbar>
+					<f:facet name="left">
+						<div style="font-size: 12px">
+							<p:commandButton value="Todos"
+								action="#{itemController.loadData}" update="itemForm" />
+
+							<p:commandButton value="Ativos"
+								action="#{itemController.findItemActives}" update="itemForm" />
+
+							<p:commandButton value="Completados"
+								action="#{itemController.findItemCompleted}" update="itemForm" />
+						</div>
+					</f:facet>
+
+					<f:facet name="right">
+						<div style="font-size: 12px">
+							<p:commandButton value="Limpar Completados"
+								rendered="#{itemController.quantidadeItemsCompletados > 0}"
+								action="#{itemController.deleteItemsCompleted}"
+								update="itemForm" />
+						</div>
+					</f:facet>
+				</p:toolbar>
+			</div>
 		</h:form>
 	</ui:define>
+
+	<script>
+		function display(img) {
+			img.;
+		}
+	</script>
 </ui:composition>
+
 </html>
