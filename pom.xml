@@ -89,6 +89,8 @@
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
 			<version>6.2</version>
+			<scope>compile</scope>
+
 		</dependency>
 		<!-- End JSF and PrimeFaces -->
 	</dependencies>

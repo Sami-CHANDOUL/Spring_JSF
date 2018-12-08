@@ -9,6 +9,8 @@
 		<meta charset="utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" type="text/css" href="resources/bootstrap.css" />
+		<script src="resources/bootstrap.css"/>
 		<title>TODO</title>
 	</h:head>
 	<h:body>
@@ -16,8 +18,7 @@
 			<div class="ui-g-12">
 				<p:toolbar>
 					<f:facet name="left">
-						<p:button href="/" value="List of Items" />
-						<p:button href="/item" value="New Item" />
+						<p:commandButton value="TODO" styleClass="btn btn-primary" />
 					</f:facet>
 				</p:toolbar>
 			</div>

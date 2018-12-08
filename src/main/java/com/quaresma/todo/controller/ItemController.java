@@ -2,6 +2,8 @@ package com.quaresma.todo.controller;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.ocpsoft.rewrite.annotation.Join;
 import org.ocpsoft.rewrite.annotation.RequestAction;
 import org.ocpsoft.rewrite.el.ELBeanName;
@@ -27,6 +29,12 @@ public class ItemController {
 
 	private List<Item> itemsList;
 
+	@PostConstruct
+	public void init() {
+		item = new Item();
+		loadData();
+	}
+
 	public String save() {
 		item.setStatus(false);
 		itemRepository.save(item);
@@ -38,12 +46,18 @@ public class ItemController {
 	public Item getItem() {
 		return item;
 	}
-	
-	
-	/**Estas anotações são necessárias para carregar a coleção de dados antes da renderização da view.*/
+
+	/**
+	 * Estas anotações são necessárias para carregar a coleção de dados antes da
+	 * renderização da view.
+	 */
 	@Deferred
 	@RequestAction
 	@IgnorePostback
+	public void loadData() {
+		itemsList = itemRepository.findAll();
+	}
+
 	public List<Item> getItemsList() {
 		return itemsList;
 	}

@@ -10,30 +10,25 @@
 <ui:composition template="layout.xhtml">
 	<ui:define name="content">
 		<h:form id="itemForm">
-			<p:panel header="Item Details">
-				<h:panelGrid columns="1">
-					<p:outputLabel for="name" value="Name: " />
-					<p:inputText id="name" value="#{itemController.item.nome}" />
-					<h:commandButton value="Save" action="#{itemController.save}" />
-				</h:panelGrid>
-			</p:panel>
+
+			<h:panelGrid columns="2" layout="grid">
+				<p:inputText id="name" value="#{itemController.item.nome}" size="50">
+					<f:passThroughAttribute name="placeholder"
+						value="O que precisa ser feito?" />
+				</p:inputText>
+				<p:commandButton value="Save" action="#{itemController.save}" />
+			</h:panelGrid>
 
 			<p:panel header="Item List">
 				<p:dataTable id="table" var="item"
-					value="#{itemController.itemsList}">
-					<p:column>
-						<f:facet name="header"># Id</f:facet>
-						<h:outputText value="#{item.id}" />
-					</p:column>
-
-					<p:column>
-						<f:facet name="header">Name</f:facet>
-						<h:outputText value="#{item.nome}" />
-					</p:column>
-
+					value="#{itemController.itemsList}" styleClass="table">
 					<p:column>
 						<f:facet name="header">Status</f:facet>
 						<h:outputText value="#{item.status}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">Name</f:facet>
+						<h:outputText value="#{item.nome}" />
 					</p:column>
 				</p:dataTable>
 			</p:panel>
