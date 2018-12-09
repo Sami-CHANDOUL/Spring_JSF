@@ -23,7 +23,7 @@ import com.quaresma.todo.model.Item;
 @Scope(value = "session")
 @Component(value = "itemController")
 @ELBeanName(value = "itemController")
-@Join(path = "/item", to = "/item-form.jsf")
+@Join(path = "/", to = "/item-form.jsf")
 public class ItemController {
 
 	@Autowired
