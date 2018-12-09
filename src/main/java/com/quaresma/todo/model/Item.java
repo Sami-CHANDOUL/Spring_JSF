@@ -3,19 +3,22 @@ package com.quaresma.todo.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import org.hibernate.annotations.GenericGenerator;
+
 
 @Entity
 public class Item {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(generator = "increment")
+	@GenericGenerator(name = "increment", strategy = "increment")
 	private int id;
-
+	
 	@Column
 	private String nome;
-
+	
 	@Column
 	private boolean status;
 

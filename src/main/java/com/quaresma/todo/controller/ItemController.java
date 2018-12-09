@@ -16,8 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.quaresma.todo.dao.ItemDao;
+import com.quaresma.todo.messageUtils.Messages;
 import com.quaresma.todo.model.Item;
-import com.quaresma.todo.repository.ItemRepository;
 
 @Scope(value = "session")
 @Component(value = "itemController")
@@ -26,7 +27,7 @@ import com.quaresma.todo.repository.ItemRepository;
 public class ItemController {
 
 	@Autowired
-	private ItemRepository itemRepository;
+	private ItemDao itemDao;
 
 	private Item item;
 
@@ -42,15 +43,6 @@ public class ItemController {
 		loadData();
 	}
 
-	public String save() {
-		item.setStatus(false);
-		itemRepository.save(item);
-		item = new Item();
-		loadData();
-
-		return "/item-form.xhtml?faces-redirect=true";
-	}
-
 	/**
 	 * Estas anotações são necessárias para carregar a coleção de dados antes da
 	 * renderização da view.
@@ -59,7 +51,28 @@ public class ItemController {
 	@RequestAction
 	@IgnorePostback
 	public void loadData() {
-		itemsList = itemRepository.findAll();
+		itemsList = itemDao.findAll();
+	}
+
+	public String save() {
+
+		if (item.getNome() == null || item.getNome().trim() == "") {
+			Messages.generateMessageInfo(FacesMessage.SEVERITY_ERROR, "Campo está vazio.",
+					"Campo: \"O que precisa ser feito\", precisa ser preenchido.");
+			return null;
+		} else {
+			item.setStatus(false);
+			try {
+				itemDao.saveOrUpdate(item);
+				item = new Item();
+				loadData();
+			} catch (Exception e) {
+				Messages.generateMessageInfo(FacesMessage.SEVERITY_ERROR, "Erro de persistência.", e.getMessage());
+			}
+
+			return "/item-form.xhtml?faces-redirect=true";
+		}
+
 	}
 
 	public void changeStatusItem(Item item) {
@@ -68,16 +81,16 @@ public class ItemController {
 		else
 			item.setStatus(true);
 
-		itemRepository.save(item);
+		itemDao.saveOrUpdate(item);
 
-		quantidadeItemsAtivos = itemRepository.findItemsActives().size();
-		quantidadeItemsCompletados = itemRepository.findItemsCompleted().size();
+		quantidadeItemsAtivos = itemDao.findItemsActives().size();
+		quantidadeItemsCompletados = itemDao.findItemsCompleted().size();
 
 	}
 
 	public void deleteItem(Item item) {
 		try {
-			itemRepository.delete(item);
+			itemDao.delete(item);
 			loadData();
 		} catch (Exception e) {
 			e.getMessage();
@@ -86,22 +99,22 @@ public class ItemController {
 
 	public void deleteItemsCompleted() {
 
-		List<Item> itemsCompleted = itemRepository.findItemsCompleted();
+		List<Item> itemsCompleted = itemDao.findItemsCompleted();
 
 		for (Item item : itemsCompleted) {
-			itemRepository.delete(item);
+			itemDao.delete(item);
 		}
-		
+
 		loadData();
-		
+
 	}
 
 	public void findItemActives() {
-		itemsList = itemRepository.findItemsActives();
+		itemsList = itemDao.findItemsActives();
 	}
 
 	public void findItemCompleted() {
-		itemsList = itemRepository.findItemsCompleted();
+		itemsList = itemDao.findItemsCompleted();
 	}
 
 	public void onCellEdit(CellEditEvent event) {
@@ -111,10 +124,9 @@ public class ItemController {
 		FacesContext context = FacesContext.getCurrentInstance();
 		if (newValue != null && !newValue.equals(oldValue)) {
 			Item item = context.getApplication().evaluateExpressionGet(context, "#{item}", Item.class);
-			itemRepository.save(item);
-			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed",
-					"Old: " + oldValue + ", New:" + newValue);
-			FacesContext.getCurrentInstance().addMessage(null, msg);
+			itemDao.saveOrUpdate(item);
+			Messages.generateMessageInfo(FacesMessage.SEVERITY_INFO, "Item alterado",
+					"Antigo: " + oldValue + ", Novo:" + newValue);
 		}
 	}
 
@@ -127,12 +139,12 @@ public class ItemController {
 	}
 
 	public int getQuantidadeItemsAtivos() {
-		quantidadeItemsAtivos = itemRepository.findItemsActives().size();
+		quantidadeItemsAtivos = itemDao.findItemsActives().size();
 		return quantidadeItemsAtivos;
 	}
 
 	public int getQuantidadeItemsCompletados() {
-		quantidadeItemsCompletados = itemRepository.findItemsCompleted().size();
+		quantidadeItemsCompletados = itemDao.findItemsCompleted().size();
 		return quantidadeItemsCompletados;
 	}
 
