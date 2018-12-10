@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +19,7 @@ import com.quaresma.todo.dao.ItemDao;
 import com.quaresma.todo.model.Item;
 
 @RestController
-@RequestMapping("/item")
+@RequestMapping(value = "/item", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 @CrossOrigin(origins = "*")
 public class ItemControllerRest {
 
@@ -28,13 +29,9 @@ public class ItemControllerRest {
 	@GetMapping
 	@ResponseBody
 	public List<Item> findAll() {
-
 		List<Item> items = new ArrayList<Item>();
-
 		items = itemDao.findAll();
-
 		return items;
-
 	}
 
 	@PostMapping
