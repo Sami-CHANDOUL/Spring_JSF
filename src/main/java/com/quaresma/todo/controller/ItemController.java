@@ -76,15 +76,21 @@ public class ItemController {
 	}
 
 	public void changeStatusItem(Item item) {
-		if (item.getStatus())
-			item.setStatus(false);
-		else
-			item.setStatus(true);
 
-		itemDao.saveOrUpdate(item);
+		try {
+			if (item.getStatus())
+				item.setStatus(false);
+			else
+				item.setStatus(true);
 
-		quantidadeItemsAtivos = itemDao.findItemsActives().size();
-		quantidadeItemsCompletados = itemDao.findItemsCompleted().size();
+			itemDao.saveOrUpdate(item);
+
+			quantidadeItemsAtivos = itemDao.findItemsActives().size();
+			quantidadeItemsCompletados = itemDao.findItemsCompleted().size();
+
+		} catch (Exception e) {
+			Messages.generateMessageInfo(FacesMessage.SEVERITY_ERROR, "Erro de persistência.", e.getMessage());
+		}
 
 	}
 
@@ -93,28 +99,40 @@ public class ItemController {
 			itemDao.delete(item);
 			loadData();
 		} catch (Exception e) {
-			e.getMessage();
+			Messages.generateMessageInfo(FacesMessage.SEVERITY_ERROR, "Erro de persistência.", e.getMessage());
 		}
 	}
 
 	public void deleteItemsCompleted() {
 
-		List<Item> itemsCompleted = itemDao.findItemsCompleted();
+		try {
+			List<Item> itemsCompleted = itemDao.findItemsCompleted();
 
-		for (Item item : itemsCompleted) {
-			itemDao.delete(item);
+			for (Item item : itemsCompleted) {
+				itemDao.delete(item);
+			}
+
+			loadData();
+		} catch (Exception e) {
+			Messages.generateMessageInfo(FacesMessage.SEVERITY_ERROR, "Erro de persistência.", e.getMessage());
 		}
-
-		loadData();
 
 	}
 
 	public void findItemActives() {
-		itemsList = itemDao.findItemsActives();
+		try {
+			itemsList = itemDao.findItemsActives();
+		} catch (Exception e) {
+			Messages.generateMessageInfo(FacesMessage.SEVERITY_ERROR, "Erro de persistência.", e.getMessage());
+		}
 	}
 
 	public void findItemCompleted() {
-		itemsList = itemDao.findItemsCompleted();
+		try {
+			itemsList = itemDao.findItemsCompleted();
+		} catch (Exception e) {
+			Messages.generateMessageInfo(FacesMessage.SEVERITY_ERROR, "Erro de persistência.", e.getMessage());
+		}
 	}
 
 	public void onCellEdit(CellEditEvent event) {

@@ -1,11 +1,10 @@
-package com.quaresma.todo.daoImpl;
+package com.quaresma.todo.dao;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.quaresma.todo.dao.ItemDao;
 import com.quaresma.todo.model.Item;
 import com.quaresma.todo.repository.ItemRepository;
 
