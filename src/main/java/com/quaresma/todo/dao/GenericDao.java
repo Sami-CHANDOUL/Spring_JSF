@@ -8,6 +8,8 @@ public interface GenericDao<T, ID extends Serializable> {
 	void saveOrUpdate(T object);
 
 	void delete(T object);
+	
+	void deleteById(int id);
 
 	T findById(ID id);
 

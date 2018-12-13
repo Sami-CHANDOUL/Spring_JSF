@@ -14,19 +14,47 @@
 	right: 0;
 	bottom: 0;
 	display: none;
+
+	/** Demo **/
+	.
+	ui-grid-row
+	.ui-grid-col-2,
+	.ui-grid-row
+	.ui-grid-col-10
+	{
+	padding
+	:
+	0.5em
+	0;
+}
+
+.ui-outputlabel {
+	font-weight: bold;
+}
+
+.ui-orderlist .ui-orderlist-list {
+	height: auto;
+}
+
+.ui-orderlist .ui-grid-row .ui-grid-col-2, .ui-orderlist .ui-grid-row .ui-grid-col-10
+	{
+	padding: 0;
+}
 }
 </style>
 	<ui:define name="content">
+
 		<h:form id="itemForm">
 			<div class="mx-auto" style="width: 505px;">
 				<h:panelGrid columns="2" layout="grid"
 					styleClass="ui-panelgrid-blank ui-fluid">
 					<p:inputText id="name" value="#{itemController.item.nome}"
-						size="42">
+						style="width:100%" size="48">
 						<f:passThroughAttribute name="placeholder"
 							value="O que precisa ser feito?" />
 					</p:inputText>
-					<p:commandButton value="Add" action="#{itemController.save}" update="itemForm"/>
+					<p:commandButton value="Add" action="#{itemController.save}"
+						update="itemForm" />
 				</h:panelGrid>
 
 				<br />
@@ -78,13 +106,13 @@
 					<f:facet name="footer">
 						<div style="font-size: 12px">
 							<span>Há #{itemController.quantidadeItemsAtivos}
-								restantes.</span>
+								restante(s).</span>
 						</div>
 					</f:facet>
 
 				</p:dataTable>
 
-				<p:toolbar>
+				<p:toolbar rendered="#{not empty itemController.itemsList}">
 					<f:facet name="left">
 						<div style="font-size: 12px">
 							<p:commandButton value="Todos"

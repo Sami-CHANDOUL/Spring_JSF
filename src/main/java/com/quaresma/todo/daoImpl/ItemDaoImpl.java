@@ -47,4 +47,9 @@ public class ItemDaoImpl implements ItemDao {
 
 	}
 
+	@Override
+	public void deleteById(int id) {
+		this.itemRepository.deleteById(id);
+	}
+
 }
