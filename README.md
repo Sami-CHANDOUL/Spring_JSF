@@ -11,4 +11,4 @@ Ver JSON:
 
 http://todo-jsf-spring.herokuapp.com/item
 
-Para teste em ambiente local, basta clonar o projeto utilizando o STS (IDE para desenvolvimento Spring), executar o arquivo "TodoNewApplication.java".
+Para teste em ambiente local, basta clonar o projeto utilizando o STS (IDE para desenvolvimento Spring), executar o arquivo "TodoNewApplication.java" e entrar no browser com a URL http://localhost:8080/.
